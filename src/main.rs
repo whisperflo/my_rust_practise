@@ -65,6 +65,11 @@ enum Coin{
     Quarter(UsState),
 }
 
+struct Point{
+    x:i32,
+    y:i32,
+}
+
 // fn _value_in_cents(coin:Coin) ->u8{
 //     match coin{
 //         Coin::Penny => 1,
@@ -89,6 +94,13 @@ enum MyEnum{
     Foo,
     Bar,
 }
+#[allow(dead_code)]
+enum Message{
+    Quit,
+    Move{x:i32,y:i32},
+    Write(String),
+    ChangeColor(i32,i32,i32),
+}
 // use num::complex::Complex; 有理数和复数
 fn main() {
 
@@ -102,6 +114,62 @@ fn main() {
     }
     println!("at the end: x = {:?}, y = {}",x,y);
 
+    // 单分支多模式
+    let x = 1;
+    match x{
+        1 | 2 => println!("one or two"),
+        3 => println!("three"),
+        _ => println!("anything"),
+    }
+
+    // 通过..=匹配值的范围
+    // Rust的范围模式使用 ..= 语法，表示一个闭区间，包含起始值和结束值
+    // 序列只允许数字或字符类型，原因：它们可连续匹配，而其他类型（如布尔值、枚举等）则不适用范围模式
+    let x = 5;
+    match x {
+        1..=5 =>println!("one through five"),
+        _ => println!("something else"),
+    }
+
+    let x = 'c';
+    match x{
+        'a'..='j'=>println!("early ASCII letter"),
+        'k'..='z'=>println!("late ASCII letter"),
+        _ => println!("something else"),
+    }
+
+    // 解构结构体
+    let p = Point{ x:0 ,y:7};
+    match p{
+        Point{x,y:0} => println!("On the x axis at {}",x),
+        Point{x:0,y} => println!("On the y axis at {}",y),
+        Point{x,y} => println!("On neither axis: ({},{})",x,y),
+    }
+
+    // 解构枚举
+    // let msg = Message::ChangeColor(0, 160, 255);
+    let m1 = Message::Quit;
+    match m1{
+        Message::Quit => println!("The Quit variant has no data to destructure."),
+        Message::Move{x,y} => println!("Move in the x direction {} and in the y direction {}",x,y),
+        Message::Write(text) => println!("Text message:{}",text),
+        Message::ChangeColor(r,g,b) => println!("Change the color to red {}, green {}, and blue {}",r,g,b),
+    }
+
+    // 解构数组(不定长数组)
+    let arr: &[u16] = &[114,514];
+    if let [x,..] = arr{
+        assert_eq!(x,&114);
+        println!("The first element of the array is: {}",x);
+    }
+    if let &[..,y] = arr{
+        assert_eq!(y,514);
+        println!("The last element of the array is: {}",y);
+    }
+
+    let arr:&[u16] = &[];
+    assert!(matches!(arr,[..])); // matches!宏支持数组模式
+    assert!(!matches!(arr,[x,..])); // matches!宏支持空数组模式
     // // matches!宏
     // let v = vec![MyEnum::Foo,MyEnum::Bar,MyEnum::Foo];
 
