@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug my_project",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/my_project", // 编译后二进制
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cargo build" // F5 时先执行这个任务
+        }
+    ]
+}
