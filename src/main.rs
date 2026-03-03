@@ -16,16 +16,16 @@ fn _greet_world() {
 fn _add_with_extra(x: i32, y: i32) -> i32 {
     let x = x + 1; // 语句
     let y = y + 5; // 语句
-    x + y          // 表达式->Rust 函数默认返回最后一个表达式的值（不带分号）
+    x + y // 表达式->Rust 函数默认返回最后一个表达式的值（不带分号）
 }
 
-fn _plus_five(x:i32) ->i32{
+fn _plus_five(x: i32) -> i32 {
     x + 5
 }
 
-fn _plus_or_minus(x:i32) ->i32{
+fn _plus_or_minus(x: i32) -> i32 {
     if x > 5 {
-        return x - 5
+        return x - 5;
     }
     x + 5
 }
@@ -35,14 +35,14 @@ struct _Struct {
     b: i32,
     e: i32,
 }
-fn _change(some_string:&mut String){
+fn _change(some_string: &mut String) {
     some_string.push_str(", world!")
 }
-fn _greet(name:&str){
-    println!("Hello, {}!",name);
+fn _greet(name: &str) {
+    println!("Hello, {}!", name);
 }
-fn _say_hello(s:&str){
-    println!("{}",s);
+fn _say_hello(s: &str) {
+    println!("{}", s);
 }
 #[allow(dead_code)]
 enum Direction {
@@ -53,21 +53,21 @@ enum Direction {
 }
 
 #[allow(dead_code)]
-enum UsState{
+enum UsState {
     Alabama,
     Alaska,
 }
 #[allow(dead_code)]
-enum Coin{
+enum Coin {
     Penny,
     Nickel,
     Dime,
     Quarter(UsState),
 }
-
-struct Point{
-    x:i32,
-    y:i32,
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
 }
 
 // fn _value_in_cents(coin:Coin) ->u8{
@@ -82,41 +82,45 @@ struct Point{
 //     }
 // }
 #[allow(dead_code)]
-enum Action{
+enum Action {
     Say(String),
-    MoveTo(i32,i32),
-    ChangeColorRGB(u16,u16,u16),
+    MoveTo(i32, i32),
+    ChangeColorRGB(u16, u16, u16),
 }
 //  #[derive(Clone,Debug)]
 #[allow(dead_code)]
 #[derive(Debug)]
-enum MyEnum{
+enum MyEnum {
     Foo,
     Bar,
 }
 #[allow(dead_code)]
-enum Message{
+enum Message {
     Quit,
-    Move{x:i32,y:i32},
+    Move { x: i32, y: i32 },
     Write(String),
-    ChangeColor(i32,i32,i32),
+    ChangeColor(i32, i32, i32),
 }
+
+enum MessageAt {
+    Hello { id: i32 },
+}
+
 // use num::complex::Complex; 有理数和复数
 fn main() {
-
     // match 模式匹配中的变量遮蔽
     let x = Some(5);
     let y = 10;
     match x {
         Some(50) => println!("Got 50"),
-        Some(y) => println!("Matched,y = {}",y),
-        _=> println!("Default case,x = {:?}",x),
+        Some(y) => println!("Matched,y = {}", y),
+        _ => println!("Default case,x = {:?}", x),
     }
-    println!("at the end: x = {:?}, y = {}",x,y);
+    println!("at the end: x = {:?}, y = {}", x, y);
 
     // 单分支多模式
     let x = 1;
-    match x{
+    match x {
         1 | 2 => println!("one or two"),
         3 => println!("three"),
         _ => println!("anything"),
@@ -127,49 +131,93 @@ fn main() {
     // 序列只允许数字或字符类型，原因：它们可连续匹配，而其他类型（如布尔值、枚举等）则不适用范围模式
     let x = 5;
     match x {
-        1..=5 =>println!("one through five"),
+        1..=5 => println!("one through five"),
         _ => println!("something else"),
     }
 
     let x = 'c';
-    match x{
-        'a'..='j'=>println!("early ASCII letter"),
-        'k'..='z'=>println!("late ASCII letter"),
+    match x {
+        'a'..='j' => println!("early ASCII letter"),
+        'k'..='z' => println!("late ASCII letter"),
         _ => println!("something else"),
     }
 
     // 解构结构体
-    let p = Point{ x:0 ,y:7};
-    match p{
-        Point{x,y:0} => println!("On the x axis at {}",x),
-        Point{x:0,y} => println!("On the y axis at {}",y),
-        Point{x,y} => println!("On neither axis: ({},{})",x,y),
+    let p = Point { x: 0, y: 7 };
+    match p {
+        Point { x, y: 0 } => println!("On the x axis at {}", x),
+        Point { x: 0, y } => println!("On the y axis at {}", y),
+        Point { x, y } => println!("On neither axis: ({},{})", x, y),
     }
 
     // 解构枚举
     // let msg = Message::ChangeColor(0, 160, 255);
     let m1 = Message::Quit;
-    match m1{
+    match m1 {
         Message::Quit => println!("The Quit variant has no data to destructure."),
-        Message::Move{x,y} => println!("Move in the x direction {} and in the y direction {}",x,y),
-        Message::Write(text) => println!("Text message:{}",text),
-        Message::ChangeColor(r,g,b) => println!("Change the color to red {}, green {}, and blue {}",r,g,b),
+        Message::Move { x, y } => {
+            println!("Move in the x direction {} and in the y direction {}", x, y)
+        }
+        Message::Write(text) => println!("Text message:{}", text),
+        Message::ChangeColor(r, g, b) => {
+            println!("Change the color to red {}, green {}, and blue {}", r, g, b)
+        }
     }
 
     // 解构数组(不定长数组)
-    let arr: &[u16] = &[114,514];
-    if let [x,..] = arr{
-        assert_eq!(x,&114);
-        println!("The first element of the array is: {}",x);
+    let arr: &[u16] = &[114, 514];
+    if let [x, ..] = arr {
+        assert_eq!(x, &114);
+        println!("The first element of the array is: {}", x);
     }
-    if let &[..,y] = arr{
-        assert_eq!(y,514);
-        println!("The last element of the array is: {}",y);
+    if let &[.., y] = arr {
+        assert_eq!(y, 514);
+        println!("The last element of the array is: {}", y);
     }
 
-    let arr:&[u16] = &[];
-    assert!(matches!(arr,[..])); // matches!宏支持数组模式
-    assert!(!matches!(arr,[x,..])); // matches!宏支持空数组模式
+    let arr: &[u16] = &[];
+    assert!(matches!(arr, [..])); // matches!宏支持数组模式
+    assert!(!matches!(arr, [x, ..])); // matches!宏支持空数组模式
+
+    // 匹配守卫
+    let x = 4;
+    let y = false;
+    match x {
+        4 | 5 | 6 if y => println!("yes"),
+        _ => println!("no"),
+    }
+
+    // @绑定
+    let msg = MessageAt::Hello { id: 5 };
+    match msg {
+        MessageAt::Hello {
+            id: id_variable @ 3..=7,
+        } => {
+            println!("Found an id in range:{}", id_variable);
+        }
+        MessageAt::Hello { id: 10..=12 } => {
+            println!("Found an id in another range")
+        }
+        MessageAt::Hello { id } => {
+            println!("Found some other id :{}", id)
+        }
+    }
+
+    // @前绑定后解构(Rust 1.56新增)
+    // 使用@还可以在绑定新变量的同时，对目标进行解构
+    let p @ Point { x: px, y: py } = Point { x: 10, y: 23 };
+    println!("x:{},y:{}", px, py);
+    println!("{:?}", p);
+
+    let point = Point { x: 10, y: 5 };
+    if let p @ Point { x: 10, y } = point {
+        println!("x is 10 and y is :{} in {:?}", y, p);
+    } else {
+        println!("x was not 10");
+    }
+
+    // @新特性(Rust 1.53新增)
+    
     // // matches!宏
     // let v = vec![MyEnum::Foo,MyEnum::Bar,MyEnum::Foo];
 
@@ -212,7 +260,6 @@ fn main() {
     //     }
     // }
 
-
     // let a = [1,2,3,4,5];
     // std::array::from_fn每次都会重新分配一块新的堆内存
     // 根据一个函数，生成一个数组
@@ -230,7 +277,7 @@ fn main() {
 
     // // 编译器自动推导one的类型
     // let one  = [1,2,3];
-    
+
     // // 显示类型标注
     // let two :[u8;3] = [1,2,3];
     // let blank1 = [0;3];
@@ -296,7 +343,7 @@ fn main() {
     // // remove --删除并返回字符串中指定位置的字符
     // let mut string_remove = String::from("测试remove方法");
     // println!("string_remove 占 {} 个字节",std::mem::size_of_val(string_remove.as_str()));
-    
+
     // // 删除第一个汉字
     // string_remove.remove(0);
     // dbg!(&string_remove);
@@ -348,16 +395,14 @@ fn main() {
     // println!("The value of tup.2 is: {}", tup.2);
     // // 如果元组中的元素类型相同，可以使用数组来存储它们
     // let tup = (1,2,3);
-    // let arr = [tup.0, tup.1, tup.2];    
+    // let arr = [tup.0, tup.1, tup.2];
     // for x in arr.iter() {
     //     println!("x = {}", x);
     // }
 
-
     // let s = String::from("hello");
     // say_hello(&s);
     // say_hello(s.as_str());
-
 
     // let mut s = String::from("World");
     // let mut s = String::from("hello,world!");
@@ -408,15 +453,12 @@ fn main() {
     // let result = add_with_extra(1, 3);
     // println!("result = {}", result);
 
-
-
     // let abc:(f32,f32,f32) = (0.1,0.2,0.3);
     // let xyz:(f64,f64,f64) = (0.1,0.2,0.3);
     // println!("abc (f32)");
     // println!(" 0.1 + 0.2 :{:x}", (abc.0 + abc.1).to_bits());
     // println!("       0.3:{:x}", (abc.2).to_bits());
     // println!();
-
 
     // println!("xyz (f64)");
     // println!(" 0.1 + 0.2 :{:x}", (xyz.0 + xyz.1).to_bits());
@@ -425,20 +467,19 @@ fn main() {
     // assert!(abc.0 + abc.1 == abc.2);
     // assert!(xyz.0 + xyz.1 == xyz.2);
 
-
     // let x = (-42.0_f32).sqrt();
     // match x.is_nan() {
     //     true => println!("NaN"),
     //     false => println!("{}", x),
     // }
 
-    // if x.is_nan(){ 
+    // if x.is_nan(){
     //     println!("NaN");
     // }
     // else
     // {
     //     println!("{}", x);
-    // } 
+    // }
 
     // 循环控制
     // for i in 1..= 5{
@@ -456,5 +497,4 @@ fn main() {
     //     Direction::North | Direction::South => println!("North or South"),
     //     _ => println!("West"),
     // };
-
 }
