@@ -2,7 +2,8 @@
 // use std::io;
 
 // use std::arch::x86_64;
-
+// 引用method.rs(告诉Rust:去找method.rs)
+mod method;
 fn _greet_world() {
     let southern_germany = "Grüß Gott Welt";
     let chinese = "世界你好";
@@ -70,6 +71,15 @@ struct Point {
     y: i32,
 }
 
+// 因为 Rust 是数据和行为分离的语言，结构体只是数据 而行为是后挂上去的。
+// 上述这点与 C++ 大相径庭
+// 方法必须写在impl块中，且第一个参数必须是self
+impl Point {
+    fn sum(&self) -> i32 {
+        self.x + self.y
+    }
+}
+
 // fn _value_in_cents(coin:Coin) ->u8{
 //     match coin{
 //         Coin::Penny => 1,
@@ -108,6 +118,18 @@ enum MessageAt {
 
 // use num::complex::Complex; 有理数和复数
 fn main() {
+    // 使用外部文件的函数
+    method::hello();
+
+    // 调用外部的结构体及其方法
+    let c = method::Circle::new(0.0, 0.0, 10.0);
+    println!("area:{}", c.area());
+    c.print();
+
+    let rect1 = method::Rectangle::new(30,50);
+    println!("rect1 area:{}", rect1.area());
+
+    
     // match 模式匹配中的变量遮蔽
     let x = Some(5);
     let y = 10;
@@ -212,12 +234,13 @@ fn main() {
     let point = Point { x: 10, y: 5 };
     if let p @ Point { x: 10, y } = point {
         println!("x is 10 and y is :{} in {:?}", y, p);
+        println!("x + y = {}", p.sum())
     } else {
         println!("x was not 10");
     }
 
     // @新特性(Rust 1.53新增)
-    
+
     // // matches!宏
     // let v = vec![MyEnum::Foo,MyEnum::Bar,MyEnum::Foo];
 
