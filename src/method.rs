@@ -34,19 +34,28 @@ impl Circle {
 
 #[derive(Debug)]
 pub struct Rectangle {
-    width:u32,
-    height:u32,
+    width: u32,
+    height: u32,
 }
 
 impl Rectangle {
-    pub fn new(width:u32, height:u32) -> Rectangle {
-        Rectangle {
-            width: width,
-            height: height,
-        }
+    pub fn new(width: u32, height: u32) -> Rectangle {
+        Rectangle { width, height }
+    }
+
+    pub fn width(&self) -> u32 {
+        self.width
+    }
+    
+    pub fn height(&self) -> u32 {
+        self.height
     }
 
     pub fn area(&self) -> u32 {
         self.width * self.height
+    }
+
+    pub fn set_width(&mut self, width: u32) {
+        self.width = width
     }
 }

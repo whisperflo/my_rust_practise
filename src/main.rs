@@ -126,8 +126,19 @@ fn main() {
     println!("area:{}", c.area());
     c.print();
 
-    let rect1 = method::Rectangle::new(30,50);
+    let mut rect1 = method::Rectangle::new(30,50);
+    // Rust中 允许方法名跟结构体的字段名相同 通过方法来访问字段值
+    // if rect1.width(){
+    //     println!("The rectangle has a nonzero width of {}", rect1.width);
+    // }
     println!("rect1 area:{}", rect1.area());
+
+    rect1.set_width(40);
+    println!("Updated rect1 area:{}", rect1.area());
+
+    // 在Rust中 方法跟字段同名，往往适用于实现getter访问器方法，或者实现一些逻辑判断方法（如上面的width方法）来访问字段值
+    println!("rect1 width:{}", rect1.width());
+    println!("rect1 height:{}", rect1.height());
 
     
     // match 模式匹配中的变量遮蔽
